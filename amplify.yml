@@ -1,4 +1,18 @@
 version: 1
+
+backend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --ignore-scripts
+    build:
+      commands:
+        # Deploy (or refresh) the backend and write amplify_outputs.json
+        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        # Sanity check: fail fast if outputs are missing
+        - test -f amplify_outputs.json && echo "amplify_outputs.json present" || (echo "Missing amplify_outputs.json"; ls -la; exit 1)
+
+
 frontend:
   phases:
     preBuild:
