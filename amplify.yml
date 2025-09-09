@@ -1,19 +1,13 @@
 version: 1
-backend:
-  phases:
-    build:
-      commands:
-        - amplifyPush --simple
 frontend:
   phases:
     preBuild:
       commands:
-        # Use Node 22 during the build
-        - . ~/.nvm/nvm.sh
-        - nvm install 22
-        - nvm use 22
+        - export NVM_DIR="$HOME/.nvm"
+        - . "$NVM_DIR/nvm.sh"
+        - nvm install 22.13.0
+        - nvm use 22.13.0
         - node -v
-        - corepack enable || true
         - npm ci
     build:
       commands:
